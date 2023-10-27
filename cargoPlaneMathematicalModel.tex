@@ -1,0 +1,64 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{anysize}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\marginsize{1.5cm}{2cm}{2cm}{2cm}
+\begin{document}
+\title{\Large{Cargo Plane Example - Mathematical Model }}
+\date{}
+\maketitle
+\vspace{-0.5cm}
+The notation used for this mathematical formulation is provided in Table \ref{tab:notation}. \vspace{-0.5cm} 
+\begin{table}[h]
+\caption{Notation} 
+\centering
+\label{tab:notation}
+\begin{tabular}{lll}
+\toprule
+\multicolumn{3}{l}{\textbf{Sets and indices}} \\
+\midrule							
+$I$     & Set for the cargo types & $i \in I$  \\
+$J$     & Set for the compartments & $j \in J$ \\
+$K$     & Set for the days & $k \in K$ \\
+\midrule
+\multicolumn{3}{l}{\textbf{Parameters}}   \\
+\midrule
+$m_{ik}$     & maximum quantity for cargo type $i$ on day $k$ & [ton] \\
+$v_i$        & volume per ton of cargo type $i$ & [m$^3$/ton] \\
+$p_i$        & profit per ton of cargo type $i$ & [euro/ton] \\
+$w_j$        & weight capacity of compartment $j$ & [ton] \\
+$s_j$        & volume capacity of compartment $j$ & [m$^3$] \\
+\midrule
+\multicolumn{3}{l}{\textbf{Variables}}    \\ 
+\midrule
+$x_{ijk}$    & load of cargo type $i$ in compartment $j$ on day $k$ & [ton]  \\
+\bottomrule 
+\end{tabular}
+%\noindent\rule{\textwidth}{0.4pt}
+\end{table}
+
+The mathematical formulation then follows as: 
+%\vspace{-0.25cm} 
+\begin{align}
+\max \quad & \sum_{i \in I} \sum_{j \in J} \sum_{k \in K} p_i x_{ijk}\label{obj} &\\
+\notag
+\text{Subject to:} & &\\
+& \sum_{i \in I} v_i x_{ijk} \leq s_j &\forall j \in J, k \in K \label{volume_cons} \\
+& \sum_{i \in I} x_{ijk} \leq w_j &\forall j \in J, k \in K \label{weight_cons} \\
+& \sum_{d=1}^k \sum_{j \in J} x_{ijd} \leq \sum_{d=1}^k m_{id} &\forall i \in I, k \in K \label{cargo_cons} \\
+& w_j \sum_{i \in I} x_{i1k} - w_1 \sum_{i \in I} x_{ijk} = 0 &\forall j \in J \setminus{\{1\}} , k \in K \label{balance_cons} \\
+& x_{ijk} \geq 0 & \forall i \in I, j \in J, k \in K 
+\end{align}
+
+Objective function (\ref{obj}) is written as a maximization of total profit. Constraints (\ref{volume_cons}) and (\ref{weight_cons}) ensure that the volume and weight capacity of the compartments are respected for each day, respectively. Constraints (\ref{cargo_cons}) are for the cargo that becomes available for each type every day; namely you can not load more cargo than available on a given day. Weight balance of the airplane across compartments is maintained by constraints (\ref{balance_cons}) such that the weight in the compartments is proportional to their capacities. 
+
+%\begin{figure}[h]
+%{\includegraphics[width=0.5\textwidth]{feas_reg.png}}
+%\end{figure}
+
+       
+\end{document}
