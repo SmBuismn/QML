@@ -1,0 +1,62 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{anysize}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\marginsize{1.5cm}{2cm}{2cm}{2cm}
+\begin{document}
+\title{\Large{Traveling Salesperson Problem - TSP - Mathematical Model }}
+\date{}
+\maketitle
+\vspace{-0.5cm}
+The notation used for this mathematical formulation is provided in Table \ref{tab:notation}. \vspace{-0.5cm} 
+\begin{table}[h]
+\caption{Notation} 
+\centering
+\label{tab:notation}
+\begin{tabular}{lll}
+\toprule
+\multicolumn{2}{l}{\textbf{Sets and indices}} \\
+\midrule							
+$N$     & Set of nodes $i,j \in N$, $	\lvert N \rvert = n$, $0$ is the start/end node  \\
+\midrule
+\multicolumn{2}{l}{\textbf{Parameters}}   \\
+\midrule
+$c_{ij}$     & cost (or distance or time) from node $i$ to node $j$ \\
+\midrule
+\multicolumn{2}{l}{\textbf{Variables}}    \\ 
+\midrule
+$x_{ij}$    & binary variable, 1 if  route ($i$,$j$) is in the solution and 0 otherwise  \\
+$u_i$  & order of node $i$ in the tour (subtour elimination) \\
+\bottomrule 
+\end{tabular}
+%\noindent\rule{\textwidth}{0.4pt}
+\end{table}
+
+The mathematical formulation then follows as: 
+%\vspace{-0.25cm} 
+\begin{align}
+\min \quad & \sum_{i \in N} \sum_{j \in N} c_{ij} x_{ij}\label{obj} &\\
+\notag
+\text{Subject to:} & &\\
+& \sum_{j \in N} x_{ij} = 1 &\forall i \in N \label{outgoing} & \\
+& \sum_{i \in N} x_{ij} = 1 &\forall j \in N \label{incoming} &\\
+& u_1 = 1 \label{start_order} & &\\
+& 2 \leq u_i \leq n & \forall i \in N, i>1 \label{order_range}& \\
+& u_j - u_i + n x_{ij} \leq n - 1 & \forall i,j \in N, i \neq j \label{subtour_elimination} &\\
+& x_{ij} \in \{0,1\} & \forall i \in N, j \in N \label{x_var} &\\
+& u_i \geq 0 & \forall i \in N \label{u_var} &
+\end{align}
+
+Objective function (\ref{obj}) is written as a minimization of total cost (or distance or time). Constraints (\ref{outgoing}) ensure that each node has an outgoing arc and similarly constraints (\ref{incoming}) ensure that there is an incoming arc to ech node. Therefore, (\ref{outgoing}) and (\ref{incoming}) together maintain that each node is visited once and only once.   
+Constraints (\ref{start_order})-(\ref{subtour_elimination}) are the subtour elimination constraints based on the MTZ formulation. Namely, constraint (\ref{start_order}) labels the starting node with an order of 1, constraints (\ref{order_range}) provide the range for the other nodes between 2 and the total number of nodes. Constraints (\ref{subtour_elimination}) then determine to order in relation to the $x$ variables by respecting the order of visit. Constraints (\ref{x_var})-(\ref{u_var}) define the variables as binary and continuous, respectively. 
+
+%\begin{figure}[h]
+%{\includegraphics[width=0.5\textwidth]{feas_reg.png}}
+%\end{figure}
+
+       
+\end{document}
